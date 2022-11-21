@@ -55,15 +55,24 @@ class Week {
   }
 
   List<int> zones() {
-    List<int> zones = [0, 0, 0, 0, 0];
+    List<int> zone = [0, 0, 0, 0, 0];
     for (var n in days) {
-      zones[0] += n.zones.recovery_zone;
-      zones[1] += n.zones.fat_burning_zone;
-      zones[2] += n.zones.training_zone;
-      zones[3] += n.zones.limit_activity_zone;
-      zones[4] += n.zones.zone_of;
+      zone[0] += n.zones.recovery_zone;
+      zone[1] += n.zones.fat_burning_zone;
+      zone[2] += n.zones.training_zone;
+      zone[3] += n.zones.limit_activity_zone;
+      zone[4] += n.zones.zone_of;
     }
-    return zones;
+    int sum = 0;
+    for (int i = 0; i < 5; i++) {
+      sum += zone[i];
+    }
+
+    for (int i = 0; i < 5; i++) {
+      zone[i] = ((zone[i] / sum) * 100).round();
+    }
+
+    return zone;
   }
 
   bool isNullZone() {

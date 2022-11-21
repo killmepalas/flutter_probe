@@ -12,6 +12,7 @@ class ChartData {
 }
 
 Widget zones_chart(BuildContext context, Week week) {
+  List<int> zones = week.zones();
   return Center(
       child: Container(
           width: 400,
@@ -28,15 +29,14 @@ Widget zones_chart(BuildContext context, Week week) {
                     dataSource: [
                       // Bind data source
                       if (week.zones()[0] != 0)
-                        ChartData("Зона восстановления", week.zones()[0]),
+                        ChartData("Зона восстановления", zones[0]),
                       if (week.zones()[1] != 0)
-                        ChartData("Зона сжигания жиров", week.zones()[1]),
+                        ChartData("Зона сжигания жиров", zones[1]),
                       if (week.zones()[2] != 0)
-                        ChartData("Зона тренировки", week.zones()[2]),
+                        ChartData("Зона тренировки", zones[2]),
                       if (week.zones()[3] != 0)
-                        ChartData("Зона предельных\nнагрузок", week.zones()[3]),
-                      if (week.zones()[4] != 0)
-                        ChartData("Зона ...", week.zones()[4]),
+                        ChartData("Зона предельных\nнагрузок", zones[3]),
+                      if (week.zones()[4] != 0) ChartData("Зона ...", zones[4]),
                     ],
                     xValueMapper: (ChartData data, _) => data.x,
                     yValueMapper: (ChartData data, _) => data.y,
