@@ -1,91 +1,70 @@
-import 'package:fit_app/structures/Week.dart';
+import 'package:fit_app/structures/week.dart';
 import 'package:flutter/material.dart';
-import 'package:bezier_chart/bezier_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-Widget steps_graph(BuildContext context, Week week) {
-  final fromDate = week.days[0].day;
-  final toDate = week.days[6].day;
-  final date1 = fromDate.add(Duration(days: 1));
-  final date2 = fromDate.add(Duration(days: 2));
-  final date3 = fromDate.add(Duration(days: 3));
-  final date4 = fromDate.add(Duration(days: 4));
-  final date5 = fromDate.add(Duration(days: 5));
+class ChartData {
+  ChartData(this.x, this.y);
+  final String x;
+  final int y;
+}
 
+// Initializing the gradient variable for the series.
+final LinearGradient _linearGradient = LinearGradient(
+  colors: <Color>[
+    Color.fromARGB(255, 96, 144, 113),
+    Color.fromARGB(255, 213, 213, 213),
+  ],
+  // Setting alignment for the series gradient
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
+
+Widget StepsGraph(BuildContext context, Week week) {
   return Center(
-    child: Card(
-      elevation: 12,
-      clipBehavior: Clip.hardEdge,
       child: Container(
-        height: MediaQuery.of(context).size.height / 4,
-        width: MediaQuery.of(context).size.width / 2.9,
-        child: BezierChart(
-          bezierChartScale: BezierChartScale.WEEKLY,
-          fromDate: fromDate,
-          toDate: toDate,
-          series: [
-            BezierLine(
-              label: "Steps",
-              lineColor: Color.fromARGB(255, 2, 94, 46),
-              onMissingValue: (dateTime) {
-                if (dateTime.month.isEven) {
-                  return 10.0;
-                }
-                return 5.0;
-              },
-              data: [
-                DataPoint<DateTime>(
-                    value: week.days[0].steps.toDouble(), xAxis: fromDate),
-                DataPoint<DateTime>(
-                    value: week.days[1].steps.toDouble(), xAxis: date1),
-                DataPoint<DateTime>(
-                    value: week.days[2].steps.toDouble(), xAxis: date2),
-                DataPoint<DateTime>(
-                    value: week.days[3].steps.toDouble(), xAxis: date3),
-                DataPoint<DateTime>(
-                    value: week.days[4].steps.toDouble(), xAxis: date4),
-                DataPoint<DateTime>(
-                    value: week.days[5].steps.toDouble(), xAxis: date5),
-                DataPoint<DateTime>(
-                    value: week.days[6].steps.toDouble(), xAxis: toDate),
-              ],
-            ),
-            BezierLine(
-              label: "Minimum",
-              lineStrokeWidth: 1,
-              lineColor: Colors.black,
-              onMissingValue: (value) => week.purposeSteps.toDouble(),
-              data: [
-                DataPoint<DateTime>(
-                    value: week.purposeSteps.toDouble(), xAxis: fromDate),
-                DataPoint<DateTime>(
-                    value: week.purposeSteps.toDouble(), xAxis: toDate),
-              ],
-            ),
-          ],
-          config: BezierChartConfig(
-            verticalIndicatorStrokeWidth: 2.0,
-            verticalIndicatorColor: Colors.black12,
-            showVerticalIndicator: true,
-            verticalIndicatorFixedPosition: false,
-            snap: true,
-            contentWidth: MediaQuery.of(context).size.width / 3,
-            footerHeight: 38.0,
-            displayYAxis: true,
-            stepsYAxis: 3000,
-            backgroundGradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 5, 175, 84),
-                Color.fromARGB(255, 51, 204, 122),
-                Color.fromARGB(255, 85, 209, 143),
-                Color.fromARGB(255, 100, 181, 137),
-                Color.fromARGB(255, 154, 203, 176),
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
+          width: 500,
+          height: 150,
+          child: SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              plotAreaBorderWidth: 0,
+              primaryYAxis: NumericAxis(
+                  plotBands: <PlotBand>[
+                    PlotBand(
+                        isVisible: true,
+                        start: week.purposeSteps,
+                        end: week.purposeSteps,
+                        borderWidth: 2,
+                        dashArray: <double>[5, 5],
+                        borderColor: Colors.black,
+                        text: week.purposeSteps.toString() + "\nшагов",
+                        horizontalTextAlignment: TextAnchor.end,
+                        verticalTextAlignment: TextAnchor.start,
+                        textStyle: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w700),
+                        shouldRenderAboveSeries: true)
+                  ],
+                  axisLine: const AxisLine(width: 0),
+                  majorTickLines: const MajorTickLines(size: 0)),
+              title: ChartTitle(
+                  textStyle:
+                      TextStyle(fontSize: 30, fontWeight: FontWeight.w500)),
+              series: <ChartSeries<ChartData, String>>[
+                // Render pie chart
+                SplineAreaSeries<ChartData, String>(
+                    dataSource: [
+                      // Bind data source
+                      ChartData("Пн", week.days[0].steps),
+                      ChartData("Вт", week.days[1].steps),
+                      ChartData("Ср", week.days[2].steps),
+                      ChartData("Чт", week.days[3].steps),
+                      ChartData("Пт", week.days[4].steps),
+                      ChartData("Сб", week.days[5].steps),
+                      ChartData("Вс", week.days[6].steps),
+                    ],
+                    gradient: _linearGradient,
+                    borderWidth: 5,
+                    borderColor: Color.fromARGB(255, 35, 114, 62),
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y),
+              ])));
 }

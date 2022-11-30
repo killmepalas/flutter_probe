@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'Day.dart';
-import 'MyType.dart';
+import 'day.dart';
+import 'my_type.dart';
 
 class Week {
   List<Day> days = [];
@@ -48,9 +48,9 @@ class Week {
     if (eff.percent > 0) {
       eff.color = Color.fromARGB(255, 5, 160, 13);
     } else if (eff.percent < 0)
-      eff.color = Color.fromARGB(255, 202, 12, 12);
+      eff.color = Color.fromARGB(255, 210, 114, 12);
     else
-      eff.color = Color.fromARGB(255, 247, 152, 8);
+      eff.color = Color.fromARGB(255, 141, 189, 17);
     return eff;
   }
 
@@ -96,10 +96,10 @@ class Week {
       type.color = Color.fromARGB(255, 60, 197, 14);
     } else if (sumKkal() >= 1500) {
       type.activity = "Умеренная активность";
-      type.color = Color.fromARGB(255, 255, 106, 0);
+      type.color = Color.fromARGB(255, 199, 184, 16);
     } else {
       type.activity = "Низкая активность";
-      type.color = Color.fromARGB(255, 244, 49, 36);
+      type.color = Color.fromARGB(255, 227, 110, 14);
     }
     return type;
   }

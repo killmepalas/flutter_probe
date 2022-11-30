@@ -1,17 +1,16 @@
 import 'dart:math';
 
-import 'package:fit_app/screens/DayScreen.dart';
-import 'package:fit_app/screens/WeekScreen.dart';
-import 'package:fit_app/structures/Day.dart';
-import 'package:fit_app/structures/Zones.dart';
-import 'package:fit_app/structures/Week.dart';
+import 'package:fit_app/screens/day_screen.dart';
+import 'package:fit_app/screens/week_screen.dart';
+import 'package:fit_app/structures/day.dart';
+import 'package:fit_app/structures/zones.dart';
+import 'package:fit_app/structures/week.dart';
+import 'package:fit_app/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    theme: ThemeData(
-      primaryColor: Colors.deepOrangeAccent,
-    ),
+    theme: usualTheme,
     initialRoute: '/',
     routes: {
       '/': (context) => WeekScreen(week: createWeek()),

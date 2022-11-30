@@ -1,4 +1,4 @@
-import 'Zones.dart';
+import 'zones.dart';
 
 class Day {
   int steps = 0;
